@@ -32,39 +32,38 @@ public class Clustering {
             FileSystem fs = FileSystem.get(conf); 
             Process p = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",  
                 "mahout seqdirectory " 
-                + "-i /lab6/app/reuters-sgm " 
-                + "-o /lab6/app/reuters-seqdir "  
+                + "-i /lab6/reuters-sgm " 
+                + "-o /lab6/reuters-seqdir "  
                 + "--charset UTF-8 -chunk 64 ; " 
                 + "mahout seq2sparse "  
-                + "-i /lab6/app/reuters-seqdir "  
-                + "-o /lab6/app/reuters-sparse "  
+                + "-i /lab6/reuters-seqdir "  
+                + "-o /lab6/reuters-sparse "  
                 + "--maxDFPercent 85 --namedVector ; " 
                 + "mahout canopy " 
-                + "-i /lab6/app/reuters-sparse/tf-vectors " 
-                + "-o /lab6/app/reuters-clusters " 
-                + "-dm org.apache.mahout.common.distance.EuclideanDistanceMeasure" 
-                + "-t1 1500 -t2 2000 "}); 
+                + "-i /lab6/reuters-sparse/tf-vectors " 
+                + "-o /lab6/reuters-clusters " 
+                + "-dm org.apache.mahout.common.distance.EuclideanDistanceMeasure " 
+                + "-t1 1500 -t2 2000 -ow"}); 
             BufferedReader br = new BufferedReader( new InputStreamReader(p.getInputStream())); 
- 
             while ((s = br.readLine()) != null) 
                 System.out.println(s); 
  
             p.waitFor(); 
             p.destroy(); 
              
-            Process p2 = Runtime.getRuntime().exec(new String[]{"/bin/bash", "c",  
+            Process p2 = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c",  
                 "mahout kmeans " 
-                + "-i /lab6/app/reuters-sparse/tfidf-vectors/ " 
-                + "-c /lab6/app/reuters-clusters " 
-                + "-o /lab6/app/reuters-kmeans " 
+                + "-i /lab6/reuters-sparse/tfidf-vectors/ " 
+                + "-c /lab6/reuters-clusters/ " 
+                + "-o /lab6/reuters-kmeans " 
                 + "-dm org.apache.mahout.common.distance.EuclideanDistanceMeasure " 
-                + "-x 10 -k 10 -ow --clustering -cl -cd 0.1 ; " 
+                + "-x 10 -k 10 -ow --clustering -cl -cd 0.1; " 
                 + "mahout clusterdump " 
-                + "-s /lab6/app/reuters-kmeans/clusters-1 " 
-                + "-o /lab6/app/reuters-clusterdump "  
-                + "-d /lab6/app/reuters-sparse/dictionary.file-0 " 
+                + "-s /lab6/reuters-kmeans/clusters-1 " 
+                + "-o /lab6/reuters-clusterdump "  
+                + "-d /lab6/reuters-sparse/dictionary.file-0 " 
                 + "-dt sequencefile -b 100 -n 20 " 
-                + "-p /lab6/app/reuters-kmeans/clusteredPoints "}); 
+                + "-p /lab6/reuters-kmeans/clusteredPoints "}); 
  
             BufferedReader br1 = new BufferedReader( new InputStreamReader(p2.getInputStream())); 
  
@@ -74,7 +73,7 @@ public class Clustering {
             p2.waitFor(); 
             p2.destroy(); 
  
-            SequenceFile.Reader reader = new SequenceFile.Reader(fs, new Path("/lab6/app/reuters-kmeans/" + Cluster.CLUSTERED_POINTS_DIR + "/partm-00000"), conf); 
+            SequenceFile.Reader reader = new SequenceFile.Reader(fs, new Path("/lab6/reuters-kmeans/" + Cluster.CLUSTERED_POINTS_DIR + "/part-m-00000"), conf); 
             IntWritable key = new IntWritable(); 
             WeightedVectorWritable value = new WeightedVectorWritable(); 
             Map<String, ArrayList<String>> map = new HashMap<>(); 
