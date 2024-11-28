@@ -14,7 +14,8 @@ fi
 echo "Starting Docker container..."
 docker run -d --name $CONTAINER_NAME \
     -p 9870:9870 -p 9000:9000  -p 9864:9864 -p 9866:9866 -p 8080:8080 -p 4040:4040 -p 8020:8020\
-    -v ./scripts:/scripts \
+    -v ./lab5:/lab5 \
+    -v ./lab6:/lab6 \
     --hostname localhost \
     $IMAGE_NAME
 

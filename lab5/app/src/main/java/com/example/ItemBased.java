@@ -18,7 +18,7 @@ public class ItemBased {
  
     public static void main(String[] args) throws IOException, TasteException { 
  
-        DataModel model = new FileDataModel(new File("/scripts/app/ratings.csv")); 
+        DataModel model = new FileDataModel(new File("/lab5/app/ratings.csv")); 
  
         ItemSimilarity similarityPearson = new PearsonCorrelationSimilarity(model); 
         ItemSimilarity similarityCosine = new UncenteredCosineSimilarity(model); 

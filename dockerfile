@@ -6,7 +6,7 @@ ENV HADOOP_VERSION=3.3.6
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 ENV HADOOP_HOME=/usr/local/hadoop
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-
+ENV MAHOUT_LOCAL="True"
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 ENV HDFS_NAMENODE_USER=hadoop
@@ -45,7 +45,7 @@ RUN pip3 install hdfs
 
 RUN echo "export PATH=\$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin" >> /home/hadoop/.bashrc && \
     echo "export JAVA_HOME=$JAVA_HOME" >> /home/hadoop/.bashrc
-ENV MAHOUT_VERSION=0.9
+ENV MAHOUT_VERSION=0.5
 RUN wget https://archive.apache.org/dist/mahout/${MAHOUT_VERSION}/mahout-distribution-${MAHOUT_VERSION}.tar.gz && \
     tar -xzvf mahout-distribution-${MAHOUT_VERSION}.tar.gz && \
     mv mahout-distribution-${MAHOUT_VERSION} /usr/local/mahout && \
